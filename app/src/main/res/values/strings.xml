@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Hangman</string>
+    <string name="welcome">welcome</string>
+    <string name="tab_to_begin">Tab to begin</string>
+</resources>

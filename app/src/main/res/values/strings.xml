@@ -8,4 +8,6 @@
     <string name="submit">submit</string>
     <string name="error_guess_length">The guess must be %d letter(s)</string>
     <string name="won_congratulations">Congratulations</string>
+    <string name="won_you_won">You won!</string>
+    <string name="won_correct_word">The correct word was</string>
 </resources>

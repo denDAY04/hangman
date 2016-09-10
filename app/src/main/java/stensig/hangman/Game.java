@@ -1,5 +1,6 @@
 package stensig.hangman;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -134,6 +135,9 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         if (hangmanModule.erSpilletVundet()) {
             // TODO: switch to win activity
             Log.d(LOG_TAG, "game won");
+            Intent wonIntent = new Intent(this, Won.class);
+            wonIntent.putExtra("correctWord", hangmanModule.getOrdet());
+            startActivity(wonIntent);
         } else if (hangmanModule.erSpilletTabt()) {
             // TODO: switch to loss activity
             Log.d(LOG_TAG, "game lost");

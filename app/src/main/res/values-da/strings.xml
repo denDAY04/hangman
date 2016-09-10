@@ -9,4 +9,6 @@
     <string name="submit">send</string>
     <string name="error_guess_length">Gættet skal være på %d bogstav(er)</string>
     <string name="won_congratulations">Tillykke</string>
+    <string name="won_you_won">Du vandt!</string>
+    <string name="won_correct_word">Det korrekte ord var</string>
 </resources>

@@ -9,4 +9,77 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Game">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hangmanImageView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/galge" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/the_word"
+        android:id="@+id/targetWordLable"
+        android:layout_below="@+id/hangmanImageView"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/targetWordTextView"
+        android:layout_alignBottom="@+id/targetWordLable"
+        android:layout_toEndOf="@id/targetWordLable"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/prevously_guesses"
+        android:id="@+id/previousGuessesLab"
+        android:layout_below="@+id/targetWordLable"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/previousGuessesTextView"
+        android:layout_alignBottom="@+id/previousGuessesLab"
+        android:layout_toEndOf="@+id/previousGuessesLab"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/type_guess"
+        android:id="@+id/guessInputLab"
+        android:layout_below="@+id/previousGuessesLab"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guessInputTextField"
+        android:layout_marginLeft="10dp"
+        android:width="100dp"
+        android:layout_alignTop="@+id/guessInputLab"
+        android:layout_alignStart="@+id/targetWordTextView" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:id="@+id/submitGuessBtn"
+        android:layout_alignBottom="@+id/guessInputTextField"
+        android:layout_toEndOf="@+id/guessInputTextField" />
+
 </RelativeLayout>

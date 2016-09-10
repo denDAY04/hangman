@@ -2,4 +2,10 @@
     <string name="app_name">Hangman</string>
     <string name="welcome">welcome</string>
     <string name="tab_to_begin">Tab to begin</string>
+    <string name="the_word">The word:</string>
+    <string name="prevously_guesses">Previous guesses:</string>
+    <string name="type_guess">Type guess:</string>
+    <string name="submit">submit</string>
+    <string name="error_guess_length">The guess must be %d letter(s)</string>
+    <string name="won_congratulations">Congratulations</string>
 </resources>

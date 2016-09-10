@@ -133,14 +133,17 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
 
         hangmanModule.gætBogstav(input);
         if (hangmanModule.erSpilletVundet()) {
-            // TODO: switch to win activity
             Log.d(LOG_TAG, "game won");
             Intent wonIntent = new Intent(this, Won.class);
             wonIntent.putExtra("correctWord", hangmanModule.getOrdet());
             startActivity(wonIntent);
+            return;
         } else if (hangmanModule.erSpilletTabt()) {
-            // TODO: switch to loss activity
             Log.d(LOG_TAG, "game lost");
+            Intent lostIntent = new Intent(this, Lost.class);
+            lostIntent.putExtra("correctWord", hangmanModule.getOrdet());
+            startActivity(lostIntent);
+            return;
         }
 
         updateGui();

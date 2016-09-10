@@ -9,5 +9,7 @@
     <string name="error_guess_length">The guess must be %d letter(s)</string>
     <string name="won_congratulations">Congratulations</string>
     <string name="won_you_won">You won!</string>
-    <string name="won_correct_word">The correct word was</string>
+    <string name="correct_word">The correct word was</string>
+    <string name="lost_sorry">Sorry</string>
+    <string name="lost_you_lost">You lost!</string>
 </resources>

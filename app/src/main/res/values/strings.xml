@@ -12,4 +12,5 @@
     <string name="correct_word">The correct word was</string>
     <string name="lost_sorry">Sorry</string>
     <string name="lost_you_lost">You lost!</string>
+    <string name="play_again">Play again</string>
 </resources>

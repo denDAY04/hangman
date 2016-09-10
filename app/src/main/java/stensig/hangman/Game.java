@@ -135,14 +135,18 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         if (hangmanModule.erSpilletVundet()) {
             Log.d(LOG_TAG, "game won");
             Intent wonIntent = new Intent(this, Won.class);
+            wonIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);     // Clear stack of the game activity http://stackoverflow.com/questions/5794506/android-clear-the-back-stack
             wonIntent.putExtra("correctWord", hangmanModule.getOrdet());
             startActivity(wonIntent);
+            finish();
             return;
         } else if (hangmanModule.erSpilletTabt()) {
             Log.d(LOG_TAG, "game lost");
             Intent lostIntent = new Intent(this, Lost.class);
+            lostIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             lostIntent.putExtra("correctWord", hangmanModule.getOrdet());
             startActivity(lostIntent);
+            finish();
             return;
         }
 

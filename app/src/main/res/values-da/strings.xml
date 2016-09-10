@@ -5,7 +5,7 @@
     <string name="tab_to_begin">Tryk for at starte</string>
     <string name="the_word">Ordet:</string>
     <string name="prevously_guesses">Tidligere gæt:</string>
-    <string name="type_guess">Type guess:</string>
+    <string name="type_guess">Intast gæt:</string>
     <string name="submit">send</string>
     <string name="error_guess_length">Gættet skal være på %d bogstav(er)</string>
     <string name="won_congratulations">Tillykke</string>
@@ -13,4 +13,5 @@
     <string name="correct_word">Det korrekte ord var</string>
     <string name="lost_sorry">Beklager</string>
     <string name="lost_you_lost">Du tabte!</string>
+    <string name="play_again">Spil igen</string>
 </resources>

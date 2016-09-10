@@ -71,7 +71,7 @@
         android:layout_marginLeft="10dp"
         android:width="100dp"
         android:layout_alignTop="@+id/guessInputLab"
-        android:layout_alignStart="@+id/targetWordTextView" />
+        android:layout_toEndOf="@id/guessInputLab" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

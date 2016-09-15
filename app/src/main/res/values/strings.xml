@@ -13,4 +13,7 @@
     <string name="lost_sorry">Sorry</string>
     <string name="lost_you_lost">You lost!</string>
     <string name="play_again">Play again</string>
+    <string name="error_loading_online_words">Could not load words from DR.dk. Using default words.</string>
+    <string name="loading_online_words">Loading words onine</string>
+    <string name="menu_new_game">New game</string>
 </resources>

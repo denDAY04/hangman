@@ -1,6 +1,8 @@
 package stensig.hangman;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,9 +41,35 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         initialBoot = true;
         hangmanModule = new Galgelogik();
 
-        initUiControls();
-        updateGui();
-        initialBoot = false;
+        // Load words online in separate thread, with progress dialog on main thread.
+        final ProgressDialog progressDialog = ProgressDialog.show(this,"", getString(R.string.loading_online_words), true);
+        new AsyncTask() {
+
+            @Override
+            protected void onPostExecute(Object gotWordFromInternet) {
+                progressDialog.dismiss();
+                Boolean internetFetchSuccess = (Boolean) gotWordFromInternet;
+                if (!internetFetchSuccess) {
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_loading_online_words), Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                initUiControls();
+                updateGui();
+                initialBoot = false;
+            }
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                try {
+                    hangmanModule.hentOrdFraDr();
+                    return Boolean.TRUE;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    hangmanModule.nulstil();
+                    return Boolean.FALSE;
+                }
+            }
+        }.execute();
     }
 
     /**

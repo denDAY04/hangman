@@ -14,4 +14,7 @@
     <string name="lost_sorry">Beklager</string>
     <string name="lost_you_lost">Du tabte!</string>
     <string name="play_again">Spil igen</string>
+    <string name="error_loading_online_words">Kunne ikke hente ord fra DR.dk. Bruger standard ord. </string>
+    <string name="loading_online_words">Henter ord online</string>
+    <string name="menu_new_game">Nyt spil</string>
 </resources>

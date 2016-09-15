@@ -17,4 +17,5 @@
     <string name="error_loading_online_words">Kunne ikke hente ord fra DR.dk. Bruger standard ord. </string>
     <string name="loading_online_words">Henter ord online</string>
     <string name="menu_new_game">Nyt spil</string>
+    <string name="menu_close_game">Stop spillet</string>
 </resources>

@@ -16,4 +16,5 @@
     <string name="error_loading_online_words">Could not load words from DR.dk. Using default words.</string>
     <string name="loading_online_words">Loading words onine</string>
     <string name="menu_new_game">New game</string>
+    <string name="menu_close_game">End game</string>
 </resources>

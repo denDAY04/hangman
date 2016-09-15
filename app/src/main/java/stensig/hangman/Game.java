@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -70,6 +72,28 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         }.execute();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.game, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_new_game) {
+            Log.d(LOG_TAG, "starting new game from menu");
+            this.recreate();
+        } else if (item.getItemId() == R.id.menu_item_close_game) {
+            Log.d(LOG_TAG, "ending game from menu");
+            Intent welcomeIntent = new Intent(this, Welcome.class);
+            welcomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(welcomeIntent);
+            finish();
+        }
+        return true;
     }
 
     /**

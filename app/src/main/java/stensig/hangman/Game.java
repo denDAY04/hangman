@@ -1,15 +1,14 @@
 package stensig.hangman;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,9 +18,9 @@ import java.util.ArrayList;
 
 import galgeleg.Galgelogik;
 
-public class Game extends AppCompatActivity implements View.OnClickListener{
+public class Game extends Fragment implements View.OnClickListener{
 
-    private static final String LOG_TAG = "Game";
+    private static final String LOG_TAG = "GameFragment";
     private static final int TARGET_INPUT_LENGTH = 1;
     private static final int MAX_NUM_WRONG_GUESSES = 6;
 
@@ -36,15 +35,13 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View fragmentView = inflater.inflate(R.layout.fragment_game, container, false);
         initialBoot = true;
         hangmanModule = new Galgelogik();
 
         // Load words online in separate thread, with progress dialog on main thread.
-        final ProgressDialog progressDialog = ProgressDialog.show(this,"", getString(R.string.loading_online_words), true);
+        final ProgressDialog progressDialog = ProgressDialog.show(getContext(), "", getString(R.string.loading_online_words), true);
         new AsyncTask() {
 
             @Override
@@ -52,10 +49,10 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
                 progressDialog.dismiss();
                 Boolean internetFetchSuccess = (Boolean) gotWordFromInternet;
                 if (!internetFetchSuccess) {
-                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_loading_online_words), Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getContext(), getString(R.string.error_loading_online_words), Toast.LENGTH_LONG);
                     toast.show();
                 }
-                initUiControls();
+                initUiControls(fragmentView);
                 updateGui();
                 initialBoot = false;
             }
@@ -72,42 +69,23 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         }.execute();
+
+        return fragmentView;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.game, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_new_game) {
-            Log.d(LOG_TAG, "starting new game from menu");
-            this.recreate();
-        } else if (item.getItemId() == R.id.menu_item_close_game) {
-            Log.d(LOG_TAG, "ending game from menu");
-            Intent welcomeIntent = new Intent(this, Welcome.class);
-            welcomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(welcomeIntent);
-            finish();
-        }
-        return true;
-    }
 
     /**
      * Retrieve, store--and optionally initialize--the UI controls.
      */
-    private void initUiControls() {
-        hangmanImageView = (ImageView) findViewById(R.id.hangmanImageView);
+    private void initUiControls(View fragmentView) {
+        hangmanImageView = (ImageView) fragmentView.findViewById(R.id.hangmanImageView);
         hangmanImageView.setImageResource(R.drawable.galge);
 
-        userGuessInput = (TextView) findViewById(R.id.guessInputTextField);
-        targetWordOutput = (TextView) findViewById(R.id.targetWordTextView);
-        previousGuessesOutput = (TextView) findViewById(R.id.previousGuessesTextView);
+        userGuessInput = (TextView) fragmentView.findViewById(R.id.guessInputTextField);
+        targetWordOutput = (TextView) fragmentView.findViewById(R.id.targetWordTextView);
+        previousGuessesOutput = (TextView) fragmentView.findViewById(R.id.previousGuessesTextView);
 
-        submitGuessBtn = (Button) findViewById(R.id.submitGuessBtn);
+        submitGuessBtn = (Button) fragmentView.findViewById(R.id.submitGuessBtn);
         submitGuessBtn.setOnClickListener(this);
     }
 
@@ -178,27 +156,32 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         String input = getUserInput();
         if (input.length() != TARGET_INPUT_LENGTH) {
             String errorMsg = String.format(getString(R.string.error_guess_length), TARGET_INPUT_LENGTH);
-            Toast toastMsg = Toast.makeText(this, errorMsg, Toast.LENGTH_LONG);
+            Toast toastMsg = Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG);
             toastMsg.show();
             return;
         }
 
         hangmanModule.gætBogstav(input);
         if (hangmanModule.erSpilletVundet()) {
+
             Log.d(LOG_TAG, "game won");
-            Intent wonIntent = new Intent(this, Won.class);
-            wonIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);     // Clear stack of the game activity http://stackoverflow.com/questions/5794506/android-clear-the-back-stack
-            wonIntent.putExtra("correctWord", hangmanModule.getOrdet());
-            startActivity(wonIntent);
-            finish();
+            Fragment wonFragment = new Won();
+            Bundle args = new Bundle();
+            args.putString("correctWord", hangmanModule.getOrdet());
+            wonFragment.setArguments(args);
+
+            getFragmentManager().beginTransaction().replace(R.id.main_fragment, wonFragment).commit();
             return;
+
         } else if (hangmanModule.erSpilletTabt()) {
             Log.d(LOG_TAG, "game lost");
-            Intent lostIntent = new Intent(this, Lost.class);
-            lostIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            lostIntent.putExtra("correctWord", hangmanModule.getOrdet());
-            startActivity(lostIntent);
-            finish();
+
+            Fragment lostFragment = new Lost();
+            Bundle args = new Bundle();
+            args.putString("correctWord", hangmanModule.getOrdet());
+            lostFragment.setArguments(args);
+
+            getFragmentManager().beginTransaction().replace(R.id.main_fragment, lostFragment).commit();
             return;
         }
 

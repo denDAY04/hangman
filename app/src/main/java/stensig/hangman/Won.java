@@ -1,23 +1,29 @@
 package stensig.hangman;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class Won extends AppCompatActivity implements View.OnClickListener {
+public class Won extends Fragment implements View.OnClickListener {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_won);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View fragmentView = inflater.inflate(R.layout.fragment_won, container, false);
 
-        String correctWord = getIntent().getStringExtra("correctWord");
-        TextView correctWordOutput = (TextView) findViewById(R.id.wonCorrectWordTextView);
+        Bundle args = getArguments();
+        String correctWord = "N/A";
+        if (args != null)
+            correctWord = args.getString("correctWord");
+        TextView correctWordOutput = (TextView) fragmentView.findViewById(R.id.wonCorrectWordTextView);
         correctWordOutput.setText(correctWord);
 
-        findViewById(R.id.wonPlayAgainBtn).setOnClickListener(this);
+        fragmentView.findViewById(R.id.wonPlayAgainBtn).setOnClickListener(this);
+        return fragmentView;
     }
 
     /**
@@ -26,9 +32,6 @@ public class Won extends AppCompatActivity implements View.OnClickListener {
      */
     @Override
     public void onClick(View v) {
-        Intent gameIntent = new Intent(this, Game.class);
-        gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(gameIntent);
-        finish();
+        getFragmentManager().beginTransaction().replace(R.id.main_fragment, new Game()).commit();
     }
 }

@@ -1,30 +1,29 @@
 package stensig.hangman;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
-public class Welcome extends AppCompatActivity implements View.OnClickListener{
+public class Welcome extends Fragment implements View.OnClickListener{
 
-    private static final String LOG_TAG = "Welcome";
+    private static final String LOG_TAG = "WelcomeFragment";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
-
-        Button startBtn = (Button) findViewById(R.id.startBtn);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View fragView = inflater.inflate(R.layout.fragment_welcome, container, false);
+        Button startBtn = (Button) fragView.findViewById(R.id.startBtn);
         startBtn.setOnClickListener(this);
+        return fragView;
     }
 
     @Override
     public void onClick(View view) {
         Log.d(LOG_TAG, "staring game");
-        Intent gameWindow = new Intent(this, Game.class);
-        startActivity(gameWindow);
+        getFragmentManager().beginTransaction().replace(R.id.main_fragment, new Game()).commit();
     }
 
 }

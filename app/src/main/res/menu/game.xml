@@ -13,4 +13,12 @@
         android:title="@string/menu_close_game"
         android:icon="@android:drawable/ic_delete"
         />
+
+    <item
+        android:id="@+id/menu_item_view_words"
+        android:showAsAction="never"
+        android:title="@string/view_words"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        />
+
 </menu>

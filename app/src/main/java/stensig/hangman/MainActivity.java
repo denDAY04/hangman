@@ -1,6 +1,5 @@
 package stensig.hangman;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.menu_item_close_game) {
             Log.d(LOG_TAG, "ending game from menu");
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new Welcome()).commit();
+        } else if(item.getItemId() == R.id.menu_item_view_words) {
+            Log.d(LOG_TAG, "displaying list of possible words");
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new ViewWords()).addToBackStack(null).commit();
         }
         return true;
     }

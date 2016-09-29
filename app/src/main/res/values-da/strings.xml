@@ -18,4 +18,5 @@
     <string name="loading_online_words">Henter ord online</string>
     <string name="menu_new_game">Nyt spil</string>
     <string name="menu_close_game">Stop spillet</string>
+    <string name="view_words">Vis ord</string>
 </resources>

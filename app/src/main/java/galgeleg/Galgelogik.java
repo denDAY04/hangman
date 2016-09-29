@@ -147,4 +147,14 @@ public class Galgelogik {
     System.out.println("muligeOrd = " + muligeOrd);
     nulstil();
   }
+
+  public ArrayList<String> getMuligeOrd() {
+    return muligeOrd;
+  }
+
+  public void nulstilMedOrd(String nytOrd) {
+    nulstil();
+    ordet = nytOrd;
+    opdaterSynligtOrd();
+  }
 }

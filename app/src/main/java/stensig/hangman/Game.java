@@ -27,7 +27,6 @@ public class Game extends Fragment implements View.OnClickListener{
     private boolean initialBoot;
 
     private ImageView hangmanImageView;
-    private Galgelogik hangmanModule;
     private TextView userGuessInput;
     private TextView targetWordOutput;
     private TextView previousGuessesOutput;
@@ -37,38 +36,48 @@ public class Game extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(R.layout.fragment_game, container, false);
-        initialBoot = true;
-        hangmanModule = new Galgelogik();
 
-        // Load words online in separate thread, with progress dialog on main thread.
-        final ProgressDialog progressDialog = ProgressDialog.show(getContext(), "", getString(R.string.loading_online_words), true);
-        new AsyncTask() {
+        Bundle args = getArguments();
+        if (savedInstanceState == null) {
+            initialBoot = true;
+            if (args == null || args.get("restarting_with_word") == null) {
+                GameSingleton.getInstance().nulstil();
 
-            @Override
-            protected void onPostExecute(Object gotWordFromInternet) {
-                progressDialog.dismiss();
-                Boolean internetFetchSuccess = (Boolean) gotWordFromInternet;
-                if (!internetFetchSuccess) {
-                    Toast toast = Toast.makeText(getContext(), getString(R.string.error_loading_online_words), Toast.LENGTH_LONG);
-                    toast.show();
-                }
+                // Load words online in separate thread, with progress dialog on main thread.
+                final ProgressDialog progressDialog = ProgressDialog.show(getContext(), "", getString(R.string.loading_online_words), true);
+                new AsyncTask() {
+
+                    @Override
+                    protected void onPostExecute(Object gotWordFromInternet) {
+                        progressDialog.dismiss();
+                        Boolean internetFetchSuccess = (Boolean) gotWordFromInternet;
+                        if (!internetFetchSuccess) {
+                            Toast toast = Toast.makeText(getContext(), getString(R.string.error_loading_online_words), Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                        initUiControls(fragmentView);
+                        updateGui();
+                        initialBoot = false;
+                    }
+
+                    @Override
+                    protected Object doInBackground(Object[] objects) {
+                        try {
+                            GameSingleton.getInstance().hentOrdFraDr();
+                            return Boolean.TRUE;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            GameSingleton.getInstance().nulstil();
+                            return Boolean.FALSE;
+                        }
+                    }
+                }.execute();
+            } else {
                 initUiControls(fragmentView);
                 updateGui();
                 initialBoot = false;
             }
-
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                try {
-                    hangmanModule.hentOrdFraDr();
-                    return Boolean.TRUE;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    hangmanModule.nulstil();
-                    return Boolean.FALSE;
-                }
-            }
-        }.execute();
+        }
 
         return fragmentView;
     }
@@ -94,7 +103,7 @@ public class Game extends Fragment implements View.OnClickListener{
      * This includes updating the hangman image as necessary.
      */
     private void updateGui() {
-        ArrayList<String> previousGueeses = hangmanModule.getBrugteBogstaver();
+        ArrayList<String> previousGueeses = GameSingleton.getInstance().getBrugteBogstaver();
         StringBuilder sb = new StringBuilder();
         for (String str : previousGueeses) {
             sb.append(str);
@@ -102,11 +111,11 @@ public class Game extends Fragment implements View.OnClickListener{
 
         // Due to a bad field initialization in hangmanmodule it will initially register as if the
         // last guess was wrong. Prevent by skipping update on initial boot of the activity.
-        if (!hangmanModule.erSidsteBogstavKorrekt() && !initialBoot) {
+        if (!GameSingleton.getInstance().erSidsteBogstavKorrekt() && !initialBoot) {
             updateHangmanImage();
         }
 
-        targetWordOutput.setText(hangmanModule.getSynligtOrd());
+        targetWordOutput.setText(GameSingleton.getInstance().getSynligtOrd());
         previousGuessesOutput.setText(sb.toString());
     }
 
@@ -114,7 +123,7 @@ public class Game extends Fragment implements View.OnClickListener{
      * Update the image of the hangman based on the number of wrong guesses made.
      */
     private void updateHangmanImage() {
-        int numWrongGuesses = hangmanModule.getAntalForkerteBogstaver();
+        int numWrongGuesses = GameSingleton.getInstance().getAntalForkerteBogstaver();
         switch(numWrongGuesses) {
             case 1:
                 hangmanImageView.setImageResource(R.drawable.forkert1);
@@ -161,24 +170,24 @@ public class Game extends Fragment implements View.OnClickListener{
             return;
         }
 
-        hangmanModule.gætBogstav(input);
-        if (hangmanModule.erSpilletVundet()) {
+        GameSingleton.getInstance().gætBogstav(input);
+        if (GameSingleton.getInstance().erSpilletVundet()) {
 
             Log.d(LOG_TAG, "game won");
             Fragment wonFragment = new Won();
             Bundle args = new Bundle();
-            args.putString("correctWord", hangmanModule.getOrdet());
+            args.putString("correctWord", GameSingleton.getInstance().getOrdet());
             wonFragment.setArguments(args);
 
             getFragmentManager().beginTransaction().replace(R.id.main_fragment, wonFragment).commit();
             return;
 
-        } else if (hangmanModule.erSpilletTabt()) {
+        } else if (GameSingleton.getInstance().erSpilletTabt()) {
             Log.d(LOG_TAG, "game lost");
 
             Fragment lostFragment = new Lost();
             Bundle args = new Bundle();
-            args.putString("correctWord", hangmanModule.getOrdet());
+            args.putString("correctWord", GameSingleton.getInstance().getOrdet());
             lostFragment.setArguments(args);
 
             getFragmentManager().beginTransaction().replace(R.id.main_fragment, lostFragment).commit();

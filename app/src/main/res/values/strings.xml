@@ -17,4 +17,8 @@
     <string name="loading_online_words">Loading words onine</string>
     <string name="menu_new_game">New game</string>
     <string name="menu_close_game">End game</string>
+    <string name="view_words">View words</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
